@@ -11,16 +11,20 @@ const newQuoteBtn = document.getElementById('newQuote');
 
 // Function to display a random quote as specified in Step 2
 function showRandomQuote() {
+    // Clear previous content
+    while (quoteDisplay.firstChild) {
+        quoteDisplay.removeChild(quoteDisplay.firstChild);
+    }
+
     if (quotes.length === 0) {
-        quoteDisplay.textContent = 'No quotes available';
+        const noQuotesMessage = document.createElement('p');
+        noQuotesMessage.textContent = 'No quotes available';
+        quoteDisplay.appendChild(noQuotesMessage);
         return;
     }
     
     const index = Math.floor(Math.random() * quotes.length);
     const selectedQuote = quotes[index];
-    
-    // Clear previous content
-    quoteDisplay.textContent = '';
     
     // Create quote elements
     const quoteText = document.createElement('p');
