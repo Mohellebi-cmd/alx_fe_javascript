@@ -84,6 +84,22 @@ async function syncWithServer() {
     }
 }
 
+// Function to send new quotes to the server
+async function sendQuoteToServer(quote) {
+    try {
+        const response = await fetch(serverUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quote)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error sending quote to server:', error);
+    }
+}
+
 // Restore last viewed quote from session storage
 window.addEventListener('load', () => {
     populateCategories();
@@ -111,6 +127,7 @@ function addQuote() {
         quoteCategory.value = '';
         populateCategories();
         showRandomQuote();
+        sendQuoteToServer(newQuote);
         syncWithServer();
     } else {
         alert('Please enter both quote and category');
