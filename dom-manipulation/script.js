@@ -59,6 +59,31 @@ function showRandomQuote() {
     quoteDisplay.textContent = `${selectedQuote.text}\nCategory: ${selectedQuote.category}`;
 }
 
+// Function to fetch quotes from server
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch(serverUrl);
+        const serverQuotes = await response.json();
+        return serverQuotes.map(q => ({ text: q.title, category: 'Imported' }));
+    } catch (error) {
+        console.error('Error fetching from server:', error);
+        return [];
+    }
+}
+
+// Function to sync with server
+async function syncWithServer() {
+    const serverQuotes = await fetchQuotesFromServer();
+    if (serverQuotes.length > 0) {
+        const mergedQuotes = [...quotes, ...serverQuotes];
+        localStorage.setItem('quotes', JSON.stringify(mergedQuotes));
+        quotes.length = 0;
+        quotes.push(...mergedQuotes);
+        populateCategories();
+        showRandomQuote();
+    }
+}
+
 // Restore last viewed quote from session storage
 window.addEventListener('load', () => {
     populateCategories();
@@ -96,60 +121,6 @@ function addQuote() {
 function filterQuotes() {
     localStorage.setItem('selectedCategory', categoryFilter.value);
     showRandomQuote();
-}
-
-// Function to sync with server
-async function syncWithServer() {
-    try {
-        const response = await fetch(serverUrl);
-        const serverQuotes = await response.json();
-        
-        if (serverQuotes.length > 0) {
-            const mergedQuotes = [...quotes, ...serverQuotes.map(q => ({ text: q.title, category: 'Imported' }))];
-            localStorage.setItem('quotes', JSON.stringify(mergedQuotes));
-            quotes.length = 0;
-            quotes.push(...mergedQuotes);
-            populateCategories();
-            showRandomQuote();
-        }
-    } catch (error) {
-        console.error('Error syncing with server:', error);
-    }
-}
-
-// Function to export quotes as JSON file
-function exportQuotes() {
-    const dataStr = JSON.stringify(quotes, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'quotes.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
-// Function to import quotes from JSON file
-function importFromJsonFile(event) {
-    const fileReader = new FileReader();
-    fileReader.onload = function(event) {
-        try {
-            const importedQuotes = JSON.parse(event.target.result);
-            if (Array.isArray(importedQuotes)) {
-                quotes.push(...importedQuotes);
-                localStorage.setItem('quotes', JSON.stringify(quotes));
-                alert('Quotes imported successfully!');
-                populateCategories();
-                showRandomQuote();
-            } else {
-                alert('Invalid JSON format');
-            }
-        } catch (error) {
-            alert('Error reading file: ' + error.message);
-        }
-    };
-    fileReader.readAsText(event.target.files[0]);
 }
 
 // Event Listeners
