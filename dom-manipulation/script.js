@@ -12,6 +12,7 @@ const serverUrl = "https://jsonplaceholder.typicode.com/posts";
 const quoteDisplay = document.getElementById('quoteDisplay');
 const newQuoteBtn = document.getElementById('newQuote');
 const categoryFilter = document.getElementById('categoryFilter');
+const syncStatus = document.getElementById('syncStatus');
 
 // Function to populate category dropdown
 function populateCategories() {
@@ -71,6 +72,14 @@ async function fetchQuotesFromServer() {
     }
 }
 
+// Function to show sync success message
+function showSyncSuccessMessage() {
+    syncStatus.style.display = 'block'; // Show the message
+    setTimeout(() => {
+        syncStatus.style.display = 'none'; // Hide the message after 3 seconds
+    }, 3000);
+}
+
 // Function to sync quotes with server
 async function syncQuotes() {
     const serverQuotes = await fetchQuotesFromServer();
@@ -81,6 +90,9 @@ async function syncQuotes() {
         quotes.push(...mergedQuotes);
         populateCategories();
         showRandomQuote();
+        
+        // Show success message after syncing
+        showSyncSuccessMessage();
     }
 }
 
