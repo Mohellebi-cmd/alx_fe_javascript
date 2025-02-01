@@ -11,54 +11,29 @@ const newQuoteBtn = document.getElementById('newQuote');
 
 // Function to display a random quote as specified in Step 2
 function showRandomQuote() {
-    // Clear previous content
-    while (quoteDisplay.firstChild) {
-        quoteDisplay.removeChild(quoteDisplay.firstChild);
-    }
-
     if (quotes.length === 0) {
-        const noQuotesMessage = document.createElement('p');
-        noQuotesMessage.textContent = 'No quotes available';
-        quoteDisplay.appendChild(noQuotesMessage);
+        quoteDisplay.innerHTML = '<p>No quotes available</p>';
         return;
     }
     
     const index = Math.floor(Math.random() * quotes.length);
     const selectedQuote = quotes[index];
     
-    // Create quote elements
-    const quoteText = document.createElement('p');
-    quoteText.textContent = selectedQuote.text;
-    
-    const quoteCategory = document.createElement('p');
-    quoteCategory.textContent = `Category: ${selectedQuote.category}`;
-    
-    // Append new elements
-    quoteDisplay.appendChild(quoteText);
-    quoteDisplay.appendChild(quoteCategory);
+    // Update display using innerHTML
+    quoteDisplay.innerHTML = `
+        <p>${selectedQuote.text}</p>
+        <p>Category: ${selectedQuote.category}</p>
+    `;
 }
 
 // Function to create add quote form as specified in Step 2
 function createAddQuoteForm() {
     const formDiv = document.createElement('div');
-    
-    const quoteInput = document.createElement('input');
-    quoteInput.id = 'newQuoteText';
-    quoteInput.type = 'text';
-    quoteInput.placeholder = 'Enter a new quote';
-    
-    const categoryInput = document.createElement('input');
-    categoryInput.id = 'newQuoteCategory';
-    categoryInput.type = 'text';
-    categoryInput.placeholder = 'Enter quote category';
-    
-    const addButton = document.createElement('button');
-    addButton.textContent = 'Add Quote';
-    addButton.onclick = addQuote;
-    
-    formDiv.appendChild(quoteInput);
-    formDiv.appendChild(categoryInput);
-    formDiv.appendChild(addButton);
+    formDiv.innerHTML = `
+        <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+        <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+        <button onclick="addQuote()">Add Quote</button>
+    `;
     
     document.body.appendChild(formDiv);
 }
