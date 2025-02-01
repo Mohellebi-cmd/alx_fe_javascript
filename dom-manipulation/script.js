@@ -71,8 +71,8 @@ async function fetchQuotesFromServer() {
     }
 }
 
-// Function to sync with server
-async function syncWithServer() {
+// Function to sync quotes with server
+async function syncQuotes() {
     const serverQuotes = await fetchQuotesFromServer();
     if (serverQuotes.length > 0) {
         const mergedQuotes = [...quotes, ...serverQuotes];
@@ -109,7 +109,7 @@ window.addEventListener('load', () => {
     } else {
         showRandomQuote();
     }
-    syncWithServer();
+    syncQuotes();
 });
 
 // Function to add a new quote
@@ -128,7 +128,7 @@ function addQuote() {
         populateCategories();
         showRandomQuote();
         sendQuoteToServer(newQuote);
-        syncWithServer();
+        syncQuotes();
     } else {
         alert('Please enter both quote and category');
     }
