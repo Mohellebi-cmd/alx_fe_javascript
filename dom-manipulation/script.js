@@ -110,6 +110,7 @@ window.addEventListener('load', () => {
         showRandomQuote();
     }
     syncQuotes();
+    setInterval(syncQuotes, 30000); // Sync with the server every 30 seconds
 });
 
 // Function to add a new quote
