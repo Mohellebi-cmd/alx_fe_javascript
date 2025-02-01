@@ -78,6 +78,10 @@ function showSyncSuccessMessage() {
     setTimeout(() => {
         syncStatus.style.display = 'none'; // Hide the message after 3 seconds
     }, 3000);
+
+    // Log to console and show alert
+    console.log("Quotes synced with server!");  // Log the success
+    alert("Quotes synced with server!");  // Show alert to user
 }
 
 // Function to sync quotes with server
