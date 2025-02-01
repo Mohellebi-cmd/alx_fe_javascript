@@ -34,7 +34,7 @@ function showRandomQuote() {
     }
     
     if (filteredQuotes.length === 0) {
-        quoteDisplay.innerHTML = '<p>No quotes available</p>';
+        quoteDisplay.textContent = 'No quotes available';
         return;
     }
     
@@ -45,10 +45,8 @@ function showRandomQuote() {
     sessionStorage.setItem('lastQuote', JSON.stringify(selectedQuote));
     
     // Update display
-    quoteDisplay.innerHTML = `
-        <p>${selectedQuote.text}</p>
-        <p class='quote-category'>Category: ${selectedQuote.category}</p>
-    `;
+    quoteDisplay.textContent = `${selectedQuote.text}
+Category: ${selectedQuote.category}`;
 }
 
 // Restore last viewed quote from session storage
@@ -56,10 +54,8 @@ window.addEventListener('load', () => {
     populateCategories();
     const lastQuote = JSON.parse(sessionStorage.getItem('lastQuote'));
     if (lastQuote) {
-        quoteDisplay.innerHTML = `
-            <p>${lastQuote.text}</p>
-            <p class='quote-category'>Category: ${lastQuote.category}</p>
-        `;
+        quoteDisplay.textContent = `${lastQuote.text}
+Category: ${lastQuote.category}`;
     } else {
         showRandomQuote();
     }
